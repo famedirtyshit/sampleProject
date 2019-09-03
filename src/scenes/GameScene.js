@@ -2,9 +2,11 @@ let bg1
 let player
 let mon
 let cursor
-let ammo
+let bullet
 let scoreText
 let score = 0
+let style
+let countBullet = 0
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -26,7 +28,7 @@ class GameScene extends Phaser.Scene {
     create() {
 
         bg1 = this.add.tileSprite(0, 0, 800, 600, 'bg').setOrigin(0, 0)
-        player = this.physics.add.sprite(200, 550, 'ch').setScale(0.2).setCollideWorldBounds(true)
+        player = this.physics.add.sprite(250, 700, 'ch').setScale(0.2).setCollideWorldBounds(true)
         mon = this.physics.add.image(400, -50, 'ring')
         this.anims.create({
             key: 'right',
@@ -41,25 +43,28 @@ class GameScene extends Phaser.Scene {
             repeate: -1
         })
 
-
+        bullet = this.physics.add.image(player.x, player.y - 60, 'planet').setScale(0.3)
 
         cursor = this.input.keyboard.createCursorKeys()
 
         this.time.addEvent({
             delay: 1000,
             callback: function() {
-                ammo = this.createAmmo();
-                //ammo.setVelocityY(-200)
-                /* if(ammo.y<=0){
-                     ammo.destroy
-                 }*/
+                this.createBullet();
+                bullet.setVelocityY(-200)
+                    // if (bullet.y <= 0) {
+                    //     bullet.destroy
+                    // }
+
             },
             callbackScope: this,
             loop: true
         });
 
+        style = { font: '32px Arial', fill: '#FFFFFF' };
+        scoreText = this.add.text(16, 16, "Score : 0", style)
 
-
+        this.physics.add.collider(mon, bullet, hitmons)
     }
 
     update() {
@@ -85,12 +90,20 @@ class GameScene extends Phaser.Scene {
 
     }
 
-    createAmmo() {
-        this.physics.add.image(player.x, player.y - 60, 'planet').setScale(0.3)
-
+    createBullet() {
+        bullet = this.physics.add.image(player.x, player.y - 60, 'planet').setScale(0.3)
     }
 
 
+
+}
+
+function hitmons(mon, bullet) {
+    console.log(this)
+    mon.destroy
+    bullet.destroy
+    score += 100;
+    scoreText.setText('Score: ' + score);
 
 }
 

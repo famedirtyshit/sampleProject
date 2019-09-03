@@ -12,7 +12,7 @@ class MainMenu extends Phaser.Scene {
 
     create() {
 
-        style = { font: '40px Arial', fill: '#FFFFFF', align: 'center' };
+        style = { font: '60px Arial', fill: '#FFFFFF', align: 'center' };
         text = this.add.text(250, 400, 'Start', style)
         text.setOrigin(0.5, 0.5);
         text.setInteractive();
