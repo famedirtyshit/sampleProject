@@ -7,6 +7,7 @@ let scoreText
 let score = 0
 let style
 let countBullet = 0
+let testDes
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -29,7 +30,7 @@ class GameScene extends Phaser.Scene {
 
         bg1 = this.add.tileSprite(0, 0, 800, 600, 'bg').setOrigin(0, 0)
         player = this.physics.add.sprite(250, 700, 'ch').setScale(0.2).setCollideWorldBounds(true)
-        mon = this.physics.add.image(400, -50, 'ring')
+        mon = this.physics.add.image(250, 0, 'ring')
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('ch', { start: 0, end: 3 }),
@@ -64,7 +65,9 @@ class GameScene extends Phaser.Scene {
         style = { font: '32px Arial', fill: '#FFFFFF' };
         scoreText = this.add.text(16, 16, "Score : 0", style)
 
-        this.physics.add.collider(mon, bullet, hitmons)
+        testDes = this.physics.add.image(100, 700, 'ring')
+
+        this.physics.add.collider(player, testDes, deleteObj)
     }
 
     update() {
@@ -73,7 +76,7 @@ class GameScene extends Phaser.Scene {
         bg1.tilePositionY -= 1
         if (mon.y >= 600) {
             mon.destroy
-            mon = this.physics.add.image(400, -50, 'ring')
+            mon = this.physics.add.image(250, 0, 'ring')
         }
         if (cursor.left.isDown) {
             player.setVelocityX(-300)
@@ -98,10 +101,13 @@ class GameScene extends Phaser.Scene {
 
 }
 
-function hitmons(mon, bullet) {
+function deleteObj() {
+    testDes.destroy()
+
+}
+
+function addScore() {
     console.log(this)
-    mon.destroy
-    bullet.destroy
     score += 100;
     scoreText.setText('Score: ' + score);
 
