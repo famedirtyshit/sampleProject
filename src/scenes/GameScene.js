@@ -147,4 +147,16 @@ class GameScene extends Phaser.Scene {
 
 }
 
+function deleteObj() {
+    testDes.destroy()
+
+}
+
+function addScore() {
+    console.log(this)
+    score += 100;
+    scoreText.setText('Score: ' + score);
+
+}
+
 export default GameScene;
